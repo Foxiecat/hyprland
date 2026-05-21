@@ -45,12 +45,10 @@ local function update_tablet_settings(tablet_name, path, new_value)
 end
 
 local flip = 0 -- 0 -> normal (no flips) | 2 -> 180 degrees
-AustraliaMode = hl.bind("SUPER + SHIFT + A", function()
+hl.bind("SUPER + SHIFT + A", function()
 	rotation = (rotation == 180) and 0 or 180
 	update_tablet_settings(TARGET_TABLET, { "AbsoluteModeSettings", "Tablet", "Rotation" }, rotation)
 
 	flip = (flip == 2) and 0 or 2
 	hl.monitor({ output = "DP-1", transform = flip })
 end)
-
-AustraliaMode:set_enabled(true)

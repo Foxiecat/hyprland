@@ -27,7 +27,7 @@ hl.config({
 	},
 
 	render = {
-		direct_scanout = 1,
+		direct_scanout = 0,
 	},
 
 	general = {
@@ -41,7 +41,7 @@ hl.config({
 	},
 
 	scrolling = {
-		fullscreen_on_one_column = true,
+		fullscreen_on_one_column = false,
 		focus_fit_method = 1,
 		follow_focus = true,
 		column_width = 0.5,

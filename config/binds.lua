@@ -6,9 +6,10 @@
 --
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
 
+local state = require("utils.state")
+
 local mainMod = "SUPER"
 local ipc = "qs -c noctalia-shell ipc call "
-local scripts = "~/.local/bin/"
 local terminal = "runapp wezterm"
 local file_manager = "runapp thunar"
 local browser = "runapp firefox"
@@ -18,12 +19,14 @@ local function exec(cmd)
 	return hl.dsp.exec_cmd(cmd)
 end
 
--- Custom
-local dp1_cm = "edid"
+-- HDR Toggle
+local dp1_cm = state.get("dp1_cm", "edid")
 hl.bind(mainMod .. "+ SHIFT + B", function()
 	dp1_cm = (dp1_cm == "hdredid") and "edid" or "hdredid"
 
 	hl.monitor({ output = "DP-1", cm = dp1_cm })
+
+	state.set("dp1_cm", dp1_cm)
 end)
 
 -- Noctalia
@@ -44,8 +47,11 @@ hl.bind(mainMod .. "+ T", hl.dsp.window.float())
 hl.bind(mainMod .. "+ C", hl.dsp.window.center("activewindow"))
 hl.bind(mainMod .. "+ left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. "+ right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. "+ up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. "+ down", hl.dsp.focus({ direction = "down" }))
+-- hl.bind(mainMod .. "+ up", hl.dsp.focus({ direction = "up" }))
+-- hl.bind(mainMod .. "+ down", hl.dsp.focus({ direction = "down" }))
+
+-- hl.bind(mainMod .. "+ left", hl.dsp.layout("focus l"))
+-- hl.bind(mainMod .. "+ right", hl.dsp.layout("focus r"))
 
 hl.bind(mainMod .. "+ CTRL + left", hl.dsp.window.move({ direction = "l" }))
 hl.bind(mainMod .. "+ CTRL + right", hl.dsp.window.move({ direction = "r" }))

@@ -5,6 +5,7 @@
   "diagnostics": {
     "globals": ["hl",
             "suppressMaximizeRule",
-            "read_file_contents"]
+            "read_file_contents",
+            "user"]
   }
 }
