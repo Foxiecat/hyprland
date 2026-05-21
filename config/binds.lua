@@ -56,7 +56,7 @@ hl.bind(mainMod .. "+ right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. "+ CTRL + left", hl.dsp.window.move({ direction = "l" }))
 hl.bind(mainMod .. "+ CTRL + right", hl.dsp.window.move({ direction = "r" }))
 
-hl.bind(mainMod .. "+ SHIFT + left", hl.dsp.layout("swapcol l"))
+Scrolling_Swapcol_L = hl.bind(mainMod .. "+ SHIFT + left", hl.dsp.layout("swapcol l"))
 hl.bind(mainMod .. "+ SHIFT + right", hl.dsp.layout("swapcol r"))
 
 hl.bind(mainMod .. "+ SHIFT + plus", hl.dsp.layout("colresize +conf"))
