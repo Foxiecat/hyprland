@@ -1,4 +1,4 @@
----@module 'user-functions'
+-- @module user-functions
 
 local user = {}
 
@@ -13,6 +13,9 @@ end
 -- =====================
 -- || Modules to load ||
 -- =====================
+
+user.window = load_module("window")
+user.osu = load_module("osu")
 
 -- TODO: Switch Layout function that enables and disables keybinds specifically for the layout being switched from
 

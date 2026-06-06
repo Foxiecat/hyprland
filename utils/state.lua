@@ -27,6 +27,7 @@ function state.get(key, default)
 	ensure_dir()
 	local data = helpers.read_file(path(key))
 	if not data then
+		state.set(key, default)
 		return default
 	end
 

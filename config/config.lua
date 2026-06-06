@@ -26,10 +26,6 @@ hl.config({
 		no_hardware_cursors = 1,
 	},
 
-	render = {
-		direct_scanout = 0,
-	},
-
 	general = {
 		gaps_in = 3,
 		gaps_out = 6,
@@ -42,9 +38,11 @@ hl.config({
 
 	scrolling = {
 		fullscreen_on_one_column = false,
-		focus_fit_method = 1,
+		focus_fit_method = 0,
 		follow_focus = true,
+
 		column_width = 0.5,
+
 		explicit_column_widths = "0.25, 0.5, 0.671875, 1",
 		direction = "right",
 	},

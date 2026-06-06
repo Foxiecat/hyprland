@@ -7,22 +7,18 @@
 
 -- https://wiki.hyprland.org/Configuring/Basics/Window-Rules/
 
-local function setFirefoxScrollingWidth()
-	local windows = hl.get_workspace_windows(hl.get_active_workspace().id)
-	for _, window in ipairs(windows) do
-		if window.class == "firefox" then
-			return 0.25
-		end
-	end
-	return 0.5
-end
-
 -- Window Rules
+hl.window_rule({ match = { class = "osu!", title = "osu!" }, content = "game" })
 
 hl.window_rule({
-	name = "Firefox-width",
-	match = { class = "firefox" },
-	scrolling_width = setFirefoxScrollingWidth(),
+	name = "xwayland-video-bridge-fixes",
+	match = { class = "xwaylandvideobridge" },
+	no_initial_focus = true,
+	no_focus = true,
+	no_anim = true,
+	no_blur = true,
+	max_size = "1 1",
+	opacity = 0.0,
 })
 
 local suppressMaximizeRule = hl.window_rule({
@@ -95,11 +91,17 @@ hl.workspace_rule({
 	workspace = "6",
 	persistent = true,
 	layout = "scrolling",
-	layout_opts = { direction = "right" },
 })
 
 for i = 6, 10 do
-	hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1" })
+	hl.workspace_rule({
+		workspace = tostring(i),
+		monitor = "HDMI-A-1",
+		layout_opts = {
+			direction = "right",
+			scrolling_width = 0.5,
+		},
+	})
 end
 
 -- Smart Gaps
@@ -109,3 +111,18 @@ hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, border_size = 
 hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, rounding = 0 })
 hl.window_rule({ match = { float = false, workspace = "f[1]" }, border_size = 0 })
 hl.window_rule({ match = { float = false, workspace = "f[1]" }, rounding = 0 })
+
+-- ============================================
+-- SPECIAL WORKSPACES
+-- ============================================
+hl.workspace_rule({ workspace = "special:volumecontrol", monitor = "HDMI-A-1", persistent = true })
+hl.workspace_rule({
+	workspace = "special:scratchpad",
+	monitor = "DP-1",
+	layout = "scrolling",
+	layout_opts = {
+		direction = "right",
+		scrolling_width = 0.5,
+	},
+})
+hl.window_rule({ match = { class = "org.pulseaudio.pavucontrol" }, workspace = "special:volumecontrol" })
