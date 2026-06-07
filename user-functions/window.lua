@@ -5,13 +5,13 @@ local notify = require("utils.notify")
 
 function window.force_special(pattern, ws)
 	hl.on("window.open", function(w)
-		handler = hl.on("window.title", function(w2)
+		Handler = hl.on("window.title", function(w2)
 			if w.stable_id == w2.stable_id then
 				if w.title:match(pattern) then
 					hl.dispatch(hl.dsp.window.move({ workspace = ws, window = w }))
 				end
 
-				handler:remove()
+				Handler:remove()
 			end
 		end)
 	end)

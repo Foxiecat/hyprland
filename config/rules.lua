@@ -59,6 +59,9 @@ hl.window_rule({ match = { float = true, class = "^()$", title = "^(Steam - Self
 hl.window_rule({ match = { float = true, class = "steam", title = "Friends List" } })
 hl.window_rule({ match = { float = true, class = "^(jetbrains-toolbox)$" } })
 
+-- Workspace Specific Applications
+hl.window_rule({ match = { class = "org.pulseaudio.pavucontrol" }, workspace = "special:volumecontrol" })
+
 -- https://wiki.hyprland.org/Configuring/Basics/Window-Rules/#layer-rules
 -- Layer Rules
 hl.layer_rule({
@@ -125,4 +128,3 @@ hl.workspace_rule({
 		scrolling_width = 0.5,
 	},
 })
-hl.window_rule({ match = { class = "org.pulseaudio.pavucontrol" }, workspace = "special:volumecontrol" })
