@@ -5,6 +5,7 @@
 --  ▀▀▀▀  ▀▀▀  ▀▀▀  ▀▀▀ ▀▀▀▀▀ █▪·▀▀▀▀  ▀▀▀▀
 --
 -- https://wiki.hypr.land/Configuring/Basics/Variables/
+
 hl.config({
 	input = {
 		kb_layout = "no",
@@ -40,9 +41,7 @@ hl.config({
 		fullscreen_on_one_column = false,
 		focus_fit_method = 0,
 		follow_focus = true,
-
 		column_width = 0.5,
-
 		explicit_column_widths = "0.25, 0.5, 0.671875, 1",
 		direction = "right",
 	},

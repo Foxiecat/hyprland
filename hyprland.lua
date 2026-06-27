@@ -15,11 +15,12 @@ hl.monitor({
 	scale = 1,
 	vrr = 1,
 	bitdepth = 10,
-	cm = "edid",
-	sdr_min_luminance = 0,
+	cm = "auto",
+	sdr_min_luminance = 0.005,
 	sdr_max_luminance = 225,
 	min_luminance = 0,
 	max_luminance = 1000,
+	max_avg_luminance = 250,
 })
 
 -- Samsung Odyssey G7 27"
@@ -37,6 +38,7 @@ hl.monitor({
 -- LOAD CONFIGURATION MODULES
 -- ============================================
 require("config.config")
+require("config.devices")
 require("config.rules")
 require("config.game_rules")
 require("config.animations")

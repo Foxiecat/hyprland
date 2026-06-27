@@ -12,7 +12,7 @@ local mainMod = "SUPER"
 local ipc = "qs -c noctalia-shell ipc call "
 local terminal = "runapp wezterm"
 local file_manager = "runapp thunar"
-local browser = "runapp firefox"
+local browser = "runapp app.zen_browser.zen"
 
 -- Helper functions
 local function exec(cmd)
@@ -56,17 +56,31 @@ hl.bind(mainMod .. "+ T", hl.dsp.window.float())
 
 -- Layout Binds
 hl.bind(
+	mainMod .. "+ up",
+	layout_bind({
+		master = hl.dsp.focus({ direction = "up" }),
+		scrolling = hl.dsp.layout("focus up"),
+	})
+)
+hl.bind(
+	mainMod .. "+ down",
+	layout_bind({
+		master = hl.dsp.focus({ direction = "down" }),
+		scrolling = hl.dsp.layout("focus down"),
+	})
+)
+hl.bind(
 	mainMod .. "+ left",
 	layout_bind({
 		master = hl.dsp.focus({ direction = "left" }),
-		scrolling = hl.dsp.layout("focus l"),
+		scrolling = hl.dsp.layout("focus left"),
 	})
 )
 hl.bind(
 	mainMod .. "+ right",
 	layout_bind({
 		master = hl.dsp.focus({ direction = "right" }),
-		scrolling = hl.dsp.layout("focus r"),
+		scrolling = hl.dsp.layout("focus right"),
 	})
 )
 hl.bind(
@@ -83,17 +97,32 @@ hl.bind(
 		scrolling = hl.dsp.layout("swapcol r"),
 	})
 )
+hl.bind(
+	mainMod .. "+ CTRL + comma",
+	layout_bind({
+		scrolling = hl.dsp.layout("move -col"),
+	})
+)
+hl.bind(
+	mainMod .. "+ CTRL + period",
+	layout_bind({
+		scrolling = hl.dsp.layout("move +col"),
+	})
+)
 
 -- Master Layout
-hl.bind(mainMod .. "+ C", hl.dsp.window.center("activewindow"))
+hl.bind(mainMod .. "+ C", function()
+	hl.dispatch(hl.dsp.layout("colresize 0.5"))
+	hl.dispatch(hl.dsp.layout("center"))
+end)
 
 hl.bind(mainMod .. "+ I", hl.dsp.layout("addmaster"), { desc = "Add master (master layout)" })
 hl.bind(mainMod .. " + CTRL + D", hl.dsp.layout("removemaster"), { desc = "Remove master (master layout)" })
 hl.bind(mainMod .. " + CTRL + Return", hl.dsp.layout("swapwithmaster master"), { desc = "Swap with master" })
 
 -- Scrolling layout
-hl.bind(mainMod .. "+ SHIFT + plus", hl.dsp.layout("colresize +conf"))
-hl.bind(mainMod .. "+ SHIFT + minus", hl.dsp.layout("colresize -conf"))
+hl.bind(mainMod .. "+ plus", hl.dsp.layout("colresize +conf"))
+hl.bind(mainMod .. "+ minus", hl.dsp.layout("colresize -conf"))
 
 -- Mouse
 hl.bind(mainMod .. "+ mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -114,8 +143,8 @@ for i = 0, 10 do
 	hl.bind(mainMod .. "+ CTRL +" .. key, hl.dsp.window.move({ workspace = i }))
 end
 
-hl.bind(mainMod .. "+ up", hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. "+ down", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. "+ CTRL + up", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. "+ CTRL + down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. "+ mouse_down", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. "+ mouse_up", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. "+ CTRL + mouse_down", hl.dsp.window.move({ workspace = "e-1" }))
@@ -129,9 +158,9 @@ hl.bind("SUPER + SHIFT + A", function()
 end)
 
 hl.bind(mainMod .. "+ tab", function()
-	local layouts = { "master", "scrolling" }
+	local layouts = { "scrolling", "master" }
 	local workspace = hl.get_active_workspace()
-	local next_layout = "scrolling"
+	local next_layout = "master"
 
 	if not workspace then
 		return
@@ -149,9 +178,9 @@ hl.bind(mainMod .. "+ tab", function()
 end)
 
 -- HDR Toggle
-local dp1_cm = state.get("dp1_cm", "edid")
+local dp1_cm = state.get("dp1_cm", "auto")
 hl.bind(mainMod .. "+ SHIFT + B", function()
-	dp1_cm = (dp1_cm == "hdredid") and "edid" or "hdredid"
+	dp1_cm = (dp1_cm == "hdr") and "auto" or "hdr"
 
 	hl.monitor({ output = "DP-1", cm = dp1_cm })
 
