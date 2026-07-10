@@ -3,3 +3,8 @@ hl.device({
 	name = "sony-interactive-entertainment-dualsense-wireless-controller-touchpad",
 	enabled = false,
 })
+
+hl.device({
+	name = "opentabletdriver-virtual-artist-tablet",
+	output = "DP-1",
+})

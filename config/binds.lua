@@ -10,9 +10,9 @@ local state = require("utils.state")
 
 local mainMod = "SUPER"
 local ipc = "qs -c noctalia-shell ipc call "
-local terminal = "runapp wezterm"
-local file_manager = "runapp thunar"
-local browser = "runapp app.zen_browser.zen"
+local terminal = "wezterm"
+local file_manager = "thunar"
+local browser = "app.zen_browser.zen"
 
 -- Helper functions
 local function exec(cmd)
@@ -43,6 +43,7 @@ end
 hl.bind(mainMod .. "+ SPACE", exec(ipc .. "launcher toggle"))
 hl.bind(mainMod .. "+ comma", exec(ipc .. "settings toggle"))
 hl.bind(mainMod .. "+ SHIFT + S", exec(ipc .. "plugin:screen-shot-and-record screenshot"))
+hl.bind(mainMod .. "+ C", exec(ipc .. "plugin:clipper toggle"))
 
 -- Core
 hl.bind(mainMod .. "+ RETURN", exec(terminal))
@@ -111,11 +112,6 @@ hl.bind(
 )
 
 -- Master Layout
-hl.bind(mainMod .. "+ C", function()
-	hl.dispatch(hl.dsp.layout("colresize 0.5"))
-	hl.dispatch(hl.dsp.layout("center"))
-end)
-
 hl.bind(mainMod .. "+ I", hl.dsp.layout("addmaster"), { desc = "Add master (master layout)" })
 hl.bind(mainMod .. " + CTRL + D", hl.dsp.layout("removemaster"), { desc = "Remove master (master layout)" })
 hl.bind(mainMod .. " + CTRL + Return", hl.dsp.layout("swapwithmaster master"), { desc = "Swap with master" })
@@ -132,7 +128,7 @@ hl.bind(mainMod .. "+ mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind(
 	mainMod .. "+ CTRL + S",
 	hl.dsp.window.move({ workspace = "special:scratchpad" }),
-	{ desc = "Move to scratchpad" }
+	{ desc = "Move focused window to scratchpad" }
 )
 hl.bind(mainMod .. "+ S", hl.dsp.workspace.toggle_special("scratchpad"), { desc = "Toggle scratchpad" })
 
@@ -153,6 +149,11 @@ hl.bind(mainMod .. "+ CTRL + mouse_up", hl.dsp.window.move({ workspace = "e+1" }
 -- ============================================
 -- USER BINDS
 -- ============================================
+
+hl.bind(mainMod .. "+ SHIFT + O", function()
+	user.osu.toggle_stable_mode()
+end)
+
 hl.bind("SUPER + SHIFT + A", function()
 	user.osu.australian_mode()
 end)
@@ -178,13 +179,8 @@ hl.bind(mainMod .. "+ tab", function()
 end)
 
 -- HDR Toggle
-local dp1_cm = state.get("dp1_cm", "auto")
 hl.bind(mainMod .. "+ SHIFT + B", function()
-	dp1_cm = (dp1_cm == "hdr") and "auto" or "hdr"
-
-	hl.monitor({ output = "DP-1", cm = dp1_cm })
-
-	state.set("dp1_cm", dp1_cm)
+	user.window.hdr("DP-1")
 end)
 
 -- Special Applications
