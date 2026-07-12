@@ -38,4 +38,23 @@ function window.hdr(output_str)
 	state.set("color_profile", color_profile)
 end
 
+--- Helper function to temporarily change resolution on the fly.
+--- @param resolution string Resolution to change to.
+function window.change_resolution(resolution)
+	hl.monitor({
+		output = "DP-1",
+		mode = resolution,
+	})
+end
+
+--- Helper function to temporarily change layout on the fly.
+--- @param new_layout string Layout to change to.
+function window.change_layout(new_layout)
+	hl.config({
+		general = {
+			layout = new_layout,
+		},
+	})
+end
+
 return window

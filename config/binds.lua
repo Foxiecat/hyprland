@@ -150,13 +150,31 @@ hl.bind(mainMod .. "+ CTRL + mouse_up", hl.dsp.window.move({ workspace = "e+1" }
 -- USER BINDS
 -- ============================================
 
+--#region osu
+local osu_res = "5120x1440@240.000"
+local osu_layout = "master"
 hl.bind(mainMod .. "+ SHIFT + O", function()
-	user.osu.toggle_stable_mode()
+	osu_res = (osu_res == "2560x1440@240.000") and "5120x1440@240.000" or "2560x1440@240.000"
+	osu_layout = (osu_layout == "scrolling") and "master" or "scrolling"
+
+	user.window.change_resolution(osu_res)
+	user.window.change_layout(osu_layout)
 end)
 
+local flip = state.get("australian_mode", 0)
 hl.bind("SUPER + SHIFT + A", function()
-	user.osu.australian_mode()
+	local rotation = 0
+	flip = (flip == 2) and 0 or 2
+
+	if flip == 0 then
+		rotation = 0
+	elseif flip == 2 then
+		rotation = 180
+	end
+
+	user.osu.australian_mode(flip, rotation)
 end)
+--#endregion osu
 
 hl.bind(mainMod .. "+ tab", function()
 	local layouts = { "scrolling", "master" }
