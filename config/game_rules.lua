@@ -7,6 +7,7 @@ hl.window_rule({
 	},
 	workspace = "3",
 })
+
 hl.window_rule({
 	name = "Elder Scrolls Online",
 	match = {
@@ -15,4 +16,18 @@ hl.window_rule({
 		float = false,
 	},
 	workspace = "3",
+})
+
+-- Osu
+hl.window_rule({
+  match = {
+    class = "^(osu!|osu!.exe)$",
+  },
+  workspace = "name:gaming",
+  content = "game",
+  decorate         = false,
+  fullscreen_state = 2,
+  size             = { "monitor_w", "monitor_h" },
+  sync_fullscreen  = true,
+  immediate = 1,
 })

@@ -31,18 +31,16 @@ hl.config({
 		gaps_in = 3,
 		gaps_out = 6,
 
-		border_size = 2,
-
 		layout = "master",
 		allow_tearing = true,
 	},
 
 	scrolling = {
-		fullscreen_on_one_column = false,
+		fullscreen_on_one_column = true,
 		focus_fit_method = 0,
-		follow_focus = true,
-		column_width = 0.5,
-		explicit_column_widths = "0.25, 0.5, 0.671875, 1",
+		follow_focus = false,
+		column_width = 1.0,
+		explicit_column_widths = "0.25, 0.5, 1",
 		direction = "right",
 	},
 
@@ -53,6 +51,10 @@ hl.config({
 		mfact = 0.50,
 	},
 
+	xwayland = {
+		force_zero_scaling = true,
+	},
+
 	decoration = {
 		rounding = 20,
 		rounding_power = 2,
@@ -61,7 +63,7 @@ hl.config({
 			enabled = true,
 			range = 4,
 			render_power = 3,
-			color = 0xee1a1a1a,
+			color = exee1a1a1a,
 		},
 
 		blur = {

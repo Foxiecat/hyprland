@@ -7,12 +7,16 @@
 -- https://wiki.hypr.land/Configuring/Basics/Autostart/
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd("runapp qs -c noctalia-shell")
+  hl.exec_cmd("systemctl --user start hyprland-session.target")
+	hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+	hl.exec_cmd("runapp noctalia")
+  hl.exec_cmd("xhost +SI:localuser:root")
 
-	-- Launch startup applications
-	hl.exec_cmd("runapp pavucontrol", { workspace = "special:volumecontrol" })
+  hl.exec_cmd("runapp easyeffects --service-mode")
+  hl.exec_cmd("runapp wl-paste --watch cliphist store")
+  hl.exec_cmd("runapp arch-update --tray")
+end)
 
-	-- Clipboard manager
-	hl.exec_cmd("runapp wl-paste --type text --watch cliphist store")
-	hl.exec_cmd("runapp wl-paste --type image --watch cliphist store")
+hl.on("hyprland.shutdown", function()
+  os.execute("systemctl --user stop graphical-session.target")
 end)

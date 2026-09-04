@@ -29,7 +29,7 @@ function window.kill_active()
 	end)
 end
 
-local color_profile = state.get("color_profile", "wide")
+local color_profile = "wide"
 ---Toggle between HDR and SDR color profile
 ---@param output_str string Output device, aka a monitor or screen.
 function window.hdr(output_str)

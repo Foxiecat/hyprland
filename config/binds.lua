@@ -7,17 +7,16 @@
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
 
 local state = require("utils.state")
+local notify = require("utils.notify")
 
 local mainMod = "SUPER"
-local ipc = "qs -c noctalia-shell ipc call "
-local terminal = "wezterm"
-local file_manager = "thunar"
-local browser = "app.zen_browser.zen"
+local noctCall = "noctalia msg "
+local launchPrefix = "runapp "
 
--- Helper functions
-local function exec(cmd)
-	return hl.dsp.exec_cmd(cmd)
-end
+
+--------------------------
+---- HELPER FUNCTIONS ----
+--------------------------
 
 local function layout_bind(bind_table)
 	return function()
@@ -35,130 +34,159 @@ local function layout_bind(bind_table)
 	end
 end
 
--- ============================================
--- CORE BINDS
--- ============================================
+---------------------------
+---- WINDOW MANAGEMENT ----
+---------------------------
 
--- Noctalia
-hl.bind(mainMod .. "+ SPACE", exec(ipc .. "launcher toggle"))
-hl.bind(mainMod .. "+ comma", exec(ipc .. "settings toggle"))
-hl.bind(mainMod .. "+ SHIFT + S", exec(ipc .. "plugin:screen-shot-and-record screenshot"))
-hl.bind(mainMod .. "+ C", exec(ipc .. "plugin:clipper toggle"))
+-- Window manipulation
+hl.bind(mainMod .. " + Escape",       hl.dsp.exec_cmd("hyprctl kill"))
+hl.bind(mainMod .. " + Q",            hl.dsp.window.close())
+hl.bind(mainMod .. " + ALT + Space",  hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + D",            hl.dsp.window.fullscreen({ mode = 1 }))
+hl.bind(mainMod .. " + F11",          hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + J",            hl.dsp.layout("togglesplit"))
+
+-- Change focus
+hl.bind(mainMod .. " + Left",   hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + Right",  hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + Up",     hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + Down",   hl.dsp.focus({ direction = "down" }))
+hl.bind("ALT + Tab",            hl.dsp.window.cycle_next())
 
 -- Core
-hl.bind(mainMod .. "+ RETURN", exec(terminal))
-hl.bind(mainMod .. "+ Q", hl.dsp.window.close())
-hl.bind(mainMod .. "+ SHIFT + Q", hl.dsp.window.kill())
-hl.bind(mainMod .. "+ E", exec(file_manager))
-hl.bind(mainMod .. "+ B", exec(browser))
-hl.bind(mainMod .. "+ F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-hl.bind(mainMod .. "+ M", hl.dsp.window.fullscreen({ mode = "maximized" }))
-hl.bind(mainMod .. "+ T", hl.dsp.window.float())
+hl.bind(mainMod .. " + RETURN",     hl.dsp.exec_cmd(launchPrefix .. TERMINAL))
+hl.bind(mainMod .. " + E",          hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER))
+hl.bind(mainMod .. " + B",          hl.dsp.exec_cmd(launchPrefix .. BROWSER))
+hl.bind(mainMod .. " + Z",          hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
+hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
+hl.bind(mainMod .. " + Space",      hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
+hl.bind(mainMod .. " + L",          hl.dsp.exec_cmd(noctCall .. "session lock"))
+hl.bind(mainMod .. " + ALT + C",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
+hl.bind(mainMod .. " + SHIFT + S",  hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
+hl.bind(mainMod .. " + P",          hl.dsp.exec_cmd(noctCall .. "bar-toggle DP-1"))
 
--- Layout Binds
-hl.bind(
-	mainMod .. "+ up",
-	layout_bind({
-		master = hl.dsp.focus({ direction = "up" }),
-		scrolling = hl.dsp.layout("focus up"),
-	})
-)
-hl.bind(
-	mainMod .. "+ down",
-	layout_bind({
-		master = hl.dsp.focus({ direction = "down" }),
-		scrolling = hl.dsp.layout("focus down"),
-	})
-)
-hl.bind(
-	mainMod .. "+ left",
-	layout_bind({
-		master = hl.dsp.focus({ direction = "left" }),
-		scrolling = hl.dsp.layout("focus left"),
-	})
-)
-hl.bind(
-	mainMod .. "+ right",
-	layout_bind({
-		master = hl.dsp.focus({ direction = "right" }),
-		scrolling = hl.dsp.layout("focus right"),
-	})
-)
-hl.bind(
-	mainMod .. "+ CTRL + left",
-	layout_bind({
-		master = hl.dsp.window.move({ direction = "l" }),
-		scrolling = hl.dsp.layout("swapcol l"),
-	})
-)
-hl.bind(
-	mainMod .. "+ CTRL + right",
-	layout_bind({
-		master = hl.dsp.window.move({ direction = "r" }),
-		scrolling = hl.dsp.layout("swapcol r"),
-	})
-)
-hl.bind(
-	mainMod .. "+ CTRL + comma",
-	layout_bind({
-		scrolling = hl.dsp.layout("move -col"),
-	})
-)
-hl.bind(
-	mainMod .. "+ CTRL + period",
-	layout_bind({
-		scrolling = hl.dsp.layout("move +col"),
-	})
-)
-
--- Master Layout
-hl.bind(mainMod .. "+ I", hl.dsp.layout("addmaster"), { desc = "Add master (master layout)" })
-hl.bind(mainMod .. " + CTRL + D", hl.dsp.layout("removemaster"), { desc = "Remove master (master layout)" })
 hl.bind(mainMod .. " + CTRL + Return", hl.dsp.layout("swapwithmaster master"), { desc = "Swap with master" })
 
 -- Scrolling layout
-hl.bind(mainMod .. "+ plus", hl.dsp.layout("colresize +conf"))
-hl.bind(mainMod .. "+ minus", hl.dsp.layout("colresize -conf"))
+hl.bind(mainMod .. " + plus",             hl.dsp.layout("colresize +conf"))
+hl.bind(mainMod .. " + minus",            hl.dsp.layout("colresize -conf"))
+hl.bind(mainMod .. " + I",                hl.dsp.layout("inhibit_scroll"))
+hl.bind(mainMod .. " + CONTROL + Left",       hl.dsp.layout("focus left"))
+hl.bind(mainMod .. " + CONTROL + Right",      hl.dsp.layout("focus right"))
+hl.bind(mainMod .. " + period",           hl.dsp.layout("consume_or_expel next"))
+hl.bind(mainMod .. " + comma",            hl.dsp.layout("consume_or_expel prev"))
 
 -- Mouse
 hl.bind(mainMod .. "+ mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. "+ mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Workspaces
-hl.bind(
-	mainMod .. "+ CTRL + S",
-	hl.dsp.window.move({ workspace = "special:scratchpad" }),
-	{ desc = "Move focused window to scratchpad" }
-)
-hl.bind(mainMod .. "+ S", hl.dsp.workspace.toggle_special("scratchpad"), { desc = "Toggle scratchpad" })
+-------------------------------
+---- WORKSPACES & MONITORS ----
+-------------------------------
 
-for i = 0, 10 do
+-- Focus on monitors
+hl.bind(mainMod .. " + 1", hl.dsp.focus({ monitor = MONITOR1 }))
+hl.bind(mainMod .. " + 2", hl.dsp.focus({ monitor = MONITOR2 }))
+
+-- Focus on workspace number
+-- Absolute
+for i = 1, NUM_WPM do
 	local key = i % 10
-	hl.bind(mainMod .. "+" .. key, hl.dsp.focus({ workspace = i }))
-	hl.bind(mainMod .. "+ SHIFT +" .. key, hl.dsp.window.move({ workspace = i, follow = false }))
-	hl.bind(mainMod .. "+ CTRL +" .. key, hl.dsp.window.move({ workspace = i }))
+	hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.focus({ workspace = i }))
+end
+-- Relative
+for i = 1, NUM_WPM do
+	local key = i % 10
+	hl.bind(mainMod .. " + CONTROL + " .. key, hl.dsp.focus({ workspace = "m~" .. i }))
 end
 
-hl.bind(mainMod .. "+ CTRL + up", hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. "+ CTRL + down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. "+ mouse_down", hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. "+ mouse_up", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. "+ CTRL + mouse_down", hl.dsp.window.move({ workspace = "e-1" }))
-hl.bind(mainMod .. "+ CTRL + mouse_up", hl.dsp.window.move({ workspace = "e+1" }))
+-- Move active window around workspaces & monitors
+hl.bind(mainMod .. "+ SHIFT + Left",
+  layout_bind({
+    master = hl.dsp.window.move({ direction = "l"}),
+    scrolling = hl.dsp.layout("swapcol l")
+  }))
+hl.bind(mainMod .. "+ SHIFT + Right",
+  layout_bind({
+    master = hl.dsp.window.move({ direction = "r"}),
+    scrolling = hl.dsp.layout("swapcol r")
+  }))
 
--- ============================================
--- USER BINDS
--- ============================================
+hl.bind(mainMod .. " + SHIFT + Up",                   hl.dsp.window.move({ direction = "u" }))
+hl.bind(mainMod .. " + SHIFT + Down",                 hl.dsp.window.move({ direction = "d" }))
+hl.bind(mainMod .. " + SHIFT + 1",                    hl.dsp.window.move({ monitor = MONITOR1 }))
+hl.bind(mainMod .. " + SHIFT + 2",                    hl.dsp.window.move({ monitor = MONITOR2 }))
+hl.bind(mainMod .. " + CONTROL + SHIFT + Down",      hl.dsp.window.move({ workspace = "m+1" }))
+hl.bind(mainMod .. " + CONTROL + SHIFT + Up",       hl.dsp.window.move({ workspace = "m-1" }))
+hl.bind(mainMod .. " + CONTROL + SHIFT + mouse_up",   hl.dsp.window.move({ workspace = "m-1" }))
+hl.bind(mainMod .. " + CONTROL + SHIFT + mouse_down", hl.dsp.window.move({ workspace = "m+1" }))
+for i = 1, NUM_WPM do
+    local key = i % 10
+    hl.bind(mainMod .. " + SHIFT + CONTROL + " .. key, hl.dsp.window.move({ workspace = "m~" .. i }))
+end
 
---#region osu
+-- Move to adjacent workspaces and next empty on a given monitor
+hl.bind(mainMod .. " + CONTROL + Down", hl.dsp.focus({ workspace = "m+1" }))
+hl.bind(mainMod .. " + CONTROL + Up",  hl.dsp.focus({ workspace = "m-1" }))
+hl.bind(mainMod .. " + CONTROL + ALT + Down",  hl.dsp.focus({ workspace = "emptym" }))
+
+-- Scroll through existing workspaces & monitors
+hl.bind(mainMod .. " + mouse_down",           hl.dsp.focus({ workspace = "m-1" }))
+hl.bind(mainMod .. " + mouse_up",             hl.dsp.focus({ workspace = "m+1" }))
+hl.bind(mainMod .. " + CONTROL + mouse_up",   hl.dsp.focus({ workspace = "m-1" }))
+hl.bind(mainMod .. " + CONTROL + mouse_down", hl.dsp.focus({ workspace = "m+1" }))
+
+-- Special workspace (scratchpad)
+hl.bind(mainMod .. " + CONTROL + S", hl.dsp.window.move({ workspace = "special" }))
+hl.bind(mainMod .. " + S",           hl.dsp.workspace.toggle_special())
+
+------------------------------
+---- DISCORD/VESKTO BINDS ----
+------------------------------
+hl.bind(
+  mainMod .. "+ ALT + D",
+  hl.dsp.send_shortcut({
+    mods = "CONTROL + SHIFT",
+    key = "D",
+    window = "class:vesktop"
+  }),
+  { description = "Vesktop: Deafen" }
+)
+
+hl.bind(
+  mainMod .. "+ ALT + M",
+  hl.dsp.send_shortcut({
+    mods = "CONTROL + SHIFT",
+    key = "M",
+    window = "class:vesktop"
+  }),
+  { description = "Vesktop: Mute" }
+)
+
+--------------------
+---- OTHER BINDS ----
+--------------------
+
 local osu_res = "5120x1440@240.000"
 local osu_layout = "master"
 hl.bind(mainMod .. "+ SHIFT + O", function()
 	osu_res = (osu_res == "2560x1440@240.000") and "5120x1440@240.000" or "2560x1440@240.000"
-	osu_layout = (osu_layout == "scrolling") and "master" or "scrolling"
+	osu_layout = (osu_layout == "master") and "scrolling" or "master"
 
 	user.window.change_resolution(osu_res)
 	user.window.change_layout(osu_layout)
+	os.execute("systemctl --user restart opentabletdriver.service")
+end)
+
+local direct = 0
+hl.bind(mainMod .. "+ SHIFT + D", function()
+	direct = (direct == 1) and 0 or 1
+	hl.config({
+		render = {
+			direct_scanout = direct,
+		},
+	})
+	notify.success("Direct Scanout: " .. direct)
 end)
 
 local flip = state.get("australian_mode", 0)
@@ -174,7 +202,6 @@ hl.bind("SUPER + SHIFT + A", function()
 
 	user.osu.australian_mode(flip, rotation)
 end)
---#endregion osu
 
 hl.bind(mainMod .. "+ tab", function()
 	local layouts = { "scrolling", "master" }
