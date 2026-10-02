@@ -51,6 +51,62 @@ hl.window_rule({
     workspace        = gamingWorkspace,
 })
 
+--#region games
+
+-- Osu
+hl.window_rule({
+  match = {
+    class           = "^(osu!|osu!.exe)$",
+  },
+  content           = "game",
+  decorate          = false,
+  fullscreen        = true,
+  size              = { "2560", "1440" },
+  workspace         = gamingWorkspace,
+  immediate         = 1,
+})
+
+-- FFXIV
+hl.window_rule({
+  match = {
+    class           = "^(XIVLauncher|XIVLauncher.Core)$",
+  },
+  center            = true,
+  float             = true,
+  fullscreen        = false,
+  fullscreen_state  = 0,
+  workspace         = gamingWorkspace,
+})
+hl.window_rule({
+  match = {
+    class           = "^(ffxiv_dx11.exe)$"
+  },
+  center            = true,
+  float             = true,
+  fullscreen        = true,
+  fullscreen_state  = 2,
+  content           = "game",
+  immediate         = 1,
+  workspace         = gamingWorkspace,
+})
+
+-- World of Warcraft
+hl.window_rule({
+  match = {
+    initial_title   = "World of Warcraft"
+  },
+  content           = "game",
+  immediate         = 1,
+  float             = true,
+  center            = true,
+  fullscreen        = true,
+  fullscreen_state  = 2,
+  sync_fullscreen   = true,
+  workspace         = gamingWorkspace,
+})
+
+--#endregion games
+
 -- Fix screen capture
 hl.window_rule({
 	  name              = "xwayland-video-bridge-fixes",

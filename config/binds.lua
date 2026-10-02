@@ -163,9 +163,20 @@ hl.bind(
   { description = "Vesktop: Mute" }
 )
 
---------------------
+---------------------
 ---- OTHER BINDS ----
---------------------
+---------------------
+
+local vrr_state = 1
+hl.bind(
+  mainMod .. "+ SHIFT + V",
+  function()
+    local res = state.get("resolution")
+    vrr_state = (vrr_state == 0) and 1 or 0
+    hl.monitor({output = res, vrr = vrr_state })
+
+    notify.success("VRR: "..vrr_state)
+  end)
 
 local osu_res = "5120x1440@240.000"
 local osu_layout = "master"

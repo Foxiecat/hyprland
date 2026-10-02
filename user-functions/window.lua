@@ -36,11 +36,14 @@ function window.hdr(output_str)
 	color_profile = (color_profile == "hdr") and "wide" or "hdr"
 	hl.monitor({ output = output_str, cm = color_profile })
 	state.set("color_profile", color_profile)
+
+  notify.info("Color Profile: " .. color_profile)
 end
 
 --- Helper function to temporarily change resolution on the fly.
 --- @param resolution string Resolution to change to.
 function window.change_resolution(resolution)
+  state.set("resolution", resolution)
 	hl.monitor({
 		output = "DP-1",
 		mode = resolution,

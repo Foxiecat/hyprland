@@ -7,7 +7,7 @@ end
 function notify.send(opts)
 	opts = opts or {}
 
-	local cmd = { "notify-send", "-e", "-t" .. tostring(opts.timeout or 3000) }
+	local cmd = { "notify-send", "-e", "-t " .. tostring(opts.timeout or 3000) }
 
 	if opts.icon and opts.icon ~= "" then
 		table.insert(cmd, "-i " .. shquote(opts.icon))

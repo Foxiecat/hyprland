@@ -2,9 +2,13 @@
 -- https://wiki.hyprland.org/Configuring/Basics/Workspace-Rules/
 -- Workspace Rules
 hl.workspace_rule({ workspace = "1", monitor = PRIMARY_MONITOR, default = true, persistent = true })
+
 hl.workspace_rule({ workspace = "2", monitor = PRIMARY_MONITOR, default = true, persistent = true })
 hl.workspace_rule({ workspace = "3", monitor = PRIMARY_MONITOR, default = true, persistent = true })
-hl.workspace_rule({ workspace = "name:gaming", monitor = PRIMARY_MONITOR, default = true, layout = "scrolling" })
+
+hl.workspace_rule({ workspace = "name:gaming", monitor = PRIMARY_MONITOR, default = true, layout = "master", gaps_out = 0, gaps_in = 0 })
+hl.window_rule({ match = { workspace = "name:gaming" }, border_size = 0, rounding = 0})
+
 
 hl.workspace_rule({ workspace = "4", monitor = MONITOR2, persistent = true, layout = "scrolling" })
 hl.workspace_rule({ workspace = "5", monitor = MONITOR2, persistent = true, layout = "scrolling" })

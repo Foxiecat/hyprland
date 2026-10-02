@@ -1,7 +1,7 @@
 -- Default Apps
-TERMINAL      = "/home/foxiecat/AppImages/wezterm"
+TERMINAL      = "/home/foxiecat/AppImages/wezterm.appimage"
 FILE_MANAGER  = "thunar"
-BROWSER       = "app.zen_browser.zen"
+BROWSER       = "zen-browser"
 
 -- Monitors
 MONITOR1        = "DP-1"
